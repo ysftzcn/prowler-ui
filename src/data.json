@@ -1,8 +1,14 @@
 
 [
-{ "id": 1, "name": "S3" },
-{ "id": 2, "name": "EC2" },
-{ "id": 3, "name": "EKS" }
+{ 
+"status": 1, 
+"description": "S3" },
+{ 
+"status": 2, 
+"description": "EC2" },
+{ 
+"status": 3, 
+"description": "EKS" }
 ]
 
 

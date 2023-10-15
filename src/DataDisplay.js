@@ -4,7 +4,11 @@ function DataDisplay({ filteredData }) {
   return (
     <ul>
       {filteredData.map((item) => (
-        <li key={item.id}>{item.name}</li>
+        <li key={item.status}>
+          {item.ServiceName} - 
+          {item.Status} -
+          {item.ResourceId} - 
+          {item.Description}</li>
       ))}
     </ul>
   );
