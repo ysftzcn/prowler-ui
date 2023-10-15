@@ -98,8 +98,6 @@ Use the `BLANK_README.md` to get started.
 This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 
 * [![React][React.js]][React-url]
-* [![Vercel][Vercel]][Vercel-url]
-* [![Docker][Docker]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -240,8 +238,5 @@ Use this space to list resources you find helpful and would like to give credit 
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/company/caligosec/
 [product-screenshot]: images/screenshot.png
-[Vercel]: https://img.shields.io/badge/Vercel-black?style=flat&logo=Vercel&logoColor=white
-[Vercel-url]: https://vercel.com/
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
-[Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
