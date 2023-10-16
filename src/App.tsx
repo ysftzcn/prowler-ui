@@ -1,3 +1,9 @@
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
@@ -7,6 +13,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { Cell, Pie, PieChart } from "recharts";
@@ -35,7 +50,6 @@ const renderCustomizedLabel = ({
   innerRadius,
   outerRadius,
   percent,
-  index,
 }: any) => {
   const radius = innerRadius + (outerRadius - innerRadius) * 0.4;
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
@@ -68,7 +82,7 @@ function App() {
   };
 
   const handleFileOnChange = (event: any) => {
-    reader(event.target.files[0], (err: any, res: any) => {
+    reader(event.target.files[0], (_: any, res: any) => {
       const data = JSON.parse(res);
       // TODO: daha sonra nested object kontrolu gerekiyor.
       setFileKeys(Object.keys(data[0]));
@@ -101,7 +115,7 @@ function App() {
                 </Select>
               )}
 
-              {uploadedFile && selectedKey && (
+              {uploadedFile && (
                 <Input
                   type="text"
                   onChange={handleOnChange}
@@ -238,7 +252,7 @@ function App() {
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
-                      Active Now
+                      Selected Parameter
                     </CardTitle>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -255,9 +269,22 @@ function App() {
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">+573</div>
-                    <p className="text-xs text-muted-foreground">
-                      +201 since last hour
-                    </p>
+                    <div>
+                      {uploadedFile &&
+                        uploadedFile
+                          .filter((item: any) => {
+                            return Object.values(item).some(
+                              (val: any, index: any) => {
+                                return typeof val === "string"
+                                  ? val.includes(search.toLowerCase())
+                                  : false;
+                              }
+                            );
+                          })
+                          .map((item: any, index: any) => (
+                            <div key={index}>{item[selectedKey]}</div>
+                          ))}
+                    </div>
                   </CardContent>
                 </Card>
               </div>
@@ -265,19 +292,71 @@ function App() {
                 <Card className="col-span-7">
                   <CardHeader>
                     <CardTitle>Results</CardTitle>
-                    <div>
-                      {uploadedFile &&
-                        selectedKey &&
-                        uploadedFile
-                          .filter((item: any) => {
-                            return item[selectedKey]
-                              .toLowerCase()
-                              .includes(search.toLowerCase());
-                          })
-                          .map((item: any, index: any) => (
-                            <div key={index}>{item[selectedKey]}</div>
+                    <Table className="table-fixed">
+                      <TableCaption>
+                        A list of your recent invoices.
+                      </TableCaption>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead className="w-[100px]">Status</TableHead>
+                          <TableHead className="w-[100px]">Severity</TableHead>
+                          <TableHead className="w-[100px]">
+                            Service Name
+                          </TableHead>
+                          <TableHead className="w-[100px]">Region</TableHead>
+                          <TableHead>Check ID</TableHead>
+                          <TableHead>Check Title</TableHead>
+                          <TableHead>Resource ID</TableHead>
+                          <TableHead>Status Extended</TableHead>
+                          <TableHead className="w-[300px]">Risk</TableHead>
+                          <TableHead>Recommendation</TableHead>
+                          <TableHead>Compliance</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {uploadedFile &&
+                          uploadedFile.map((item: any, index: number) => (
+                            <TableRow key={index}>
+                              <TableCell className="font-medium w-[100px]">
+                                {item.Status}
+                              </TableCell>
+                              <TableCell className="w-[100px]">
+                                {item.Severity}
+                              </TableCell>
+                              <TableCell>{item.ServiceName}</TableCell>
+                              <TableCell>{item.Region}</TableCell>
+                              <TableCell className="break-words">
+                                {item.CheckID}
+                              </TableCell>
+                              <TableCell>{item.CheckTitle}</TableCell>
+                              <TableCell>{item.ResourceId}</TableCell>
+                              <TableCell>{item.StatusExtended}</TableCell>
+                              <Accordion type="single" collapsible>
+                                <AccordionItem value="item-1">
+                                  <TableCell>
+                                    <AccordionTrigger>
+                                      Read Risk Report
+                                    </AccordionTrigger>
+                                  </TableCell>
+                                  <AccordionContent>
+                                    {item.Risk}
+                                  </AccordionContent>
+                                </AccordionItem>
+                              </Accordion>
+                              <TableCell>
+                                {item.Remediation.Recommendation.text}
+                              </TableCell>
+                              <TableCell>
+                                {Object.keys(item.Compliance).map(
+                                  (item, index) => {
+                                    return <div key={index}>{item}</div>;
+                                  }
+                                )}
+                              </TableCell>
+                            </TableRow>
                           ))}
-                    </div>
+                      </TableBody>
+                    </Table>
                   </CardHeader>
                   <CardContent className="pl-2">
                     {/* <Overview /> */}
